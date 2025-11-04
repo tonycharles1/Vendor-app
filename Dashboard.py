@@ -4,6 +4,7 @@ import requests
 from datetime import datetime, timezone
 from io import StringIO
 import pytz
+import plotly.express as px  # ✅ for column chart
 
 # Page configuration
 st.set_page_config(
@@ -137,6 +138,39 @@ def main():
         st.metric("💰 Payment Amount", formatted_amount)
     with col_metric5:
         st.metric("🧾 Total Orders", total_orders)
+
+    st.markdown("---")  # ✅ this line must be inside main()
+
+    # ✅ Column chart for Item-wise total orders
+    if df is not None and not df.empty:
+        item_summary = (
+            df.groupby('Item Name')
+              .size()
+              .reset_index(name='Total Orders')
+              .sort_values(by='Total Orders', ascending=False)
+        )
+
+        fig = px.bar(
+            item_summary,
+            x='Item Name',
+            y='Total Orders',
+            title="📊 Item-wise Total Orders",
+            text='Total Orders',
+            color='Total Orders',
+            color_continuous_scale='Blues'
+        )
+
+        fig.update_traces(textposition='outside')
+        fig.update_layout(
+            xaxis_title="Item Name",
+            yaxis_title="Total Orders",
+            showlegend=False,
+            height=600,
+            xaxis_tickangle=-45,
+            margin=dict(l=40, r=20, t=60, b=100)
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
     # Auto-refresh JavaScript
     if auto_refresh:
