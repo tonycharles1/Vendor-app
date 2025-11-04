@@ -19,6 +19,34 @@ st.set_page_config(
 # CSS for styling
 st.markdown("""
     <style>
+
+    /* ===== Metric Card Styling ===== */
+div[data-testid="stMetric"] {
+    background-color: #fff8e1;         /* soft yellow background */
+    border: 2px solid #ffd54f;         /* golden border */
+    padding: 20px 10px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Add spacing between metric cards */
+div[data-testid="stHorizontalBlock"] > div {
+    margin-right: 10px;
+}
+
+/* Slightly enlarge labels and numbers */
+[data-testid="stMetricLabel"] > div {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5d4037;
+}
+
+[data-testid="stMetricValue"] {
+    color: #1a237e;
+    font-weight: bold;
+    font-size: 1.6rem;
+}
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
