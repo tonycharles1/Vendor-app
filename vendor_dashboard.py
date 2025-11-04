@@ -26,12 +26,7 @@ st.markdown("""
         margin-bottom: 10px;
         color: #1f1f1f;
     }
-    .vendor-label {
-        color: #ff0000;
-        font-size: 0.9rem;
-        text-align: right;
-        margin-top: -10px;
-    }
+    
     .total-orders {
         font-size: 3.5rem;
         font-weight: bold;
@@ -331,15 +326,15 @@ def main():
         unique_dates = None
     
     # Display metrics at the top (right after auto-refresh message)
-    col_metric1, col_metric2, col_metric3 = st.columns(3)
+    col_metric1, col_metric2, col_metric3,col_metric4 = st.columns(4)
     with col_metric1:
-        st.metric("Unique Items", unique_items)
+        st.metric("📦Unique Items", unique_items)
     with col_metric2:
-        st.metric("Days in Range", unique_dates_count)
+        st.metric("⏳Days in Range", unique_dates_count)
     with col_metric3:
-        st.metric("Avg Orders/Day", f"{avg_per_day:.1f}")
-    
-    st.markdown("---")
+        st.metric("📅Avg Orders/Day", f"{avg_per_day:.1f}")
+    with col_metric4:
+        st.metric("🧾Total Orders", total_orders)
     
     if df is not None:
         
