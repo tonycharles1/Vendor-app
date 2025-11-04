@@ -19,13 +19,51 @@ st.set_page_config(
 # CSS for styling
 st.markdown("""
     <style>
-/* Different color themes for each metric */
-div[data-testid="stMetric"]:nth-child(1) { background-color: #e3f2fd; border-color: #64b5f6; } /* Blue */
-div[data-testid="stMetric"]:nth-child(2) { background-color: #f1f8e9; border-color: #aed581; } /* Green */
-div[data-testid="stMetric"]:nth-child(3) { background-color: #fff3e0; border-color: #ffb74d; } /* Orange */
-div[data-testid="stMetric"]:nth-child(4) { background-color: #fce4ec; border-color: #f06292; } /* Pink */
-div[data-testid="stMetric"]:nth-child(5) { background-color: #ede7f6; border-color: #9575cd; } /* Purple */
+/* Base card styling for all metrics */
+div[data-testid="stMetric"] {
+    background-color: #fff8e1;         
+    border: 2px solid #ffd54f;         
+    padding: 20px 10px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
 
+/* Increase spacing between cards */
+div[data-testid="stHorizontalBlock"] > div {
+    margin-right: 10px;
+}
+
+/* Label styling */
+[data-testid="stMetricLabel"] > div {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5d4037;
+}
+
+/* Value styling */
+[data-testid="stMetricValue"] {
+    color: #1a237e;
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+/* Apply colors per metric card */
+div[data-testid="stMetric"]:has(> div:contains("Unique Items")) {
+    background-color: #e3f2fd; border-color: #64b5f6;
+}
+div[data-testid="stMetric"]:has(> div:contains("Days in Range")) {
+    background-color: #f1f8e9; border-color: #aed581;
+}
+div[data-testid="stMetric"]:has(> div:contains("Avg Orders/Day")) {
+    background-color: #fff3e0; border-color: #ffb74d;
+}
+div[data-testid="stMetric"]:has(> div:contains("Payment Amount")) {
+    background-color: #fce4ec; border-color: #f06292;
+}
+div[data-testid="stMetric"]:has(> div:contains("Total Orders")) {
+    background-color: #ede7f6; border-color: #9575cd;
+}
  
     .main-header {
         font-size: 2.5rem;
