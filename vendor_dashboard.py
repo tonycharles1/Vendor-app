@@ -254,7 +254,7 @@ def main():
     # Header section
     col1, col2, col3 = st.columns([2.5, 4, 2.5])
     
-    with col1:
+    with col2:
         st.markdown('<div style="margin-top: 20px;">', unsafe_allow_html=True)
         
         start_date = st.date_input(
@@ -275,9 +275,9 @@ def main():
         
         st.markdown('</div>', unsafe_allow_html=True)
     
-    with col2:
+    with col1:
         st.markdown('<div class="main-header">XPRESS SGS VENDOR DETAILS</div>', unsafe_allow_html=True)
-        st.markdown('<div class="vendor-label">Vendor</div>', unsafe_allow_html=True)
+       
     
     with col3:
         # Get current time in IST (Indian Standard Time)
