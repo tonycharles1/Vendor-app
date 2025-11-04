@@ -389,7 +389,7 @@ def main():
             st.dataframe(
     styled_df,
     use_container_width=True,
-    height=400,
+    height=400,width=100,
     column_config={
         col: st.column_config.Column(width="small") for col in display_df.columns}
             )
