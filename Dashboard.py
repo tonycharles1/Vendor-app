@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from io import StringIO
 import pytz
 
@@ -58,6 +58,16 @@ def fetch_data():
         st.error(f"Error fetching data: {str(e)}")
         return None
 
+def format_in_indian_style(num):
+    """Format number in Indian style with commas"""
+    x = int(num)
+    s = f"{x:,}"
+    parts = s.split(",")
+    if len(parts) <= 3:
+        return s
+    else:
+        return parts[0] + "," + ",".join(["".join(parts[1:-2])] + parts[-2:])
+
 def main():
     # Sidebar refresh config
     with st.sidebar:
@@ -104,13 +114,16 @@ def main():
         unique_items = df['Item Name'].nunique()
         total_item_amount = df['Payment Amount'].sum() if 'Payment Amount' in df.columns else 0
         unique_dates = df['Item Date'].dt.date.nunique()
-        avg_per_day = total_orders / unique_dates if unique_dates > 0 else 0
+        avg_per_day = int(round(total_orders / unique_dates)) if unique_dates > 0 else 0
     else:
         total_orders = 0
         unique_items = 0
         total_item_amount = 0
         avg_per_day = 0
         unique_dates = 0
+
+    # Format payment amount with ₹ and Indian comma style
+    formatted_amount = f"₹{format_in_indian_style(total_item_amount)}"
 
     # Display metrics
     col_metric1, col_metric2, col_metric3, col_metric4, col_metric5 = st.columns(5)
@@ -119,9 +132,9 @@ def main():
     with col_metric2:
         st.metric("📅 Days Available", unique_dates)
     with col_metric3:
-        st.metric("📊 Avg Orders/Day", avg_per_day)
+        st.metric("📊 Avg Orders/Day", f"{avg_per_day}")
     with col_metric4:
-        st.metric("💰 Payment Amount", total_item_amount)
+        st.metric("💰 Payment Amount", formatted_amount)
     with col_metric5:
         st.metric("🧾 Total Orders", total_orders)
 
