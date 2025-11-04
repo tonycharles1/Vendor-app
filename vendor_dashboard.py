@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from io import StringIO, BytesIO
 import time
 import base64
 import os
+import pytz
 
 # Page configuration
 st.set_page_config(
@@ -284,7 +285,27 @@ def main():
         st.markdown('<div class="vendor-label">Vendor</div>', unsafe_allow_html=True)
     
     with col3:
-        last_refresh = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        # Get current time in IST (Indian Standard Time)
+        # IST is UTC+5:30
+        try:
+            # Get current UTC time
+            utc_now = datetime.now(timezone.utc)
+            # Convert to IST (UTC+5:30)
+            ist = pytz.timezone('Asia/Kolkata')
+            ist_now = utc_now.astimezone(ist)
+            last_refresh = ist_now.strftime("%d-%m-%Y %I:%M:%S %p IST")
+        except Exception as e:
+            # Fallback: manual calculation if pytz fails
+            try:
+                # IST = UTC + 5 hours 30 minutes
+                utc_now = datetime.now(timezone.utc)
+                ist_offset = timedelta(hours=5, minutes=30)
+                ist_now = utc_now + ist_offset
+                last_refresh = ist_now.strftime("%d-%m-%Y %I:%M:%S %p IST")
+            except:
+                # Final fallback to UTC
+                utc_now = datetime.now(timezone.utc)
+                last_refresh = utc_now.strftime("%d-%m-%Y %I:%M:%S %p UTC")
         st.markdown(f'<div class="date-box" style="margin-top: 20px;">Last Refresh Time<br>{last_refresh}</div>', unsafe_allow_html=True)
     
     # Process data and calculate metrics for display at top
