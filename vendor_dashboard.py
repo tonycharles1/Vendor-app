@@ -239,6 +239,9 @@ def main():
     with st.spinner("Fetching data..."):
         df = fetch_data()
     
+
+        st.markdown('<div class="main-header">XPRESS SGS VENDOR DETAILS</div>', unsafe_allow_html=True)
+
     # Refresh button at the top
     col_refresh1, col_refresh2, col_refresh3 = st.columns([1, 1, 1])
     with col_refresh2:
