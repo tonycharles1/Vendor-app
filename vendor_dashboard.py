@@ -316,8 +316,8 @@ def main():
         (df['Item Date'] >= pd.Timestamp(start_date)) &
         (df['Item Date'] <= pd.Timestamp(end_date))
     ]
-    if 'Item Total Amount' in df_filtered.columns:
-        total_item_amount = df_filtered['Item Total Amount'].sum()
+    if 'Payment Amount' in df_filtered.columns:
+        total_item_amount = df_filtered['Payment Amount'].sum()
     else:
         total_item_amount = 0
 
@@ -354,7 +354,7 @@ def main():
     with col_metric3:
         st.metric("Avg Orders/Day", f"{avg_per_day:.1f}")
     with col_metric4:
-        st.metric("Total Item Amount", f"{total_item_amount:.1f}")
+        st.metric("Payment Amount", f"{total_item_amount:.1f}")
     st.markdown("---")
     
     if df is not None:
