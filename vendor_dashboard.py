@@ -19,6 +19,31 @@ st.set_page_config(
 # CSS for styling
 st.markdown("""
     <style>
+
+    /* Make the first column (Item Name) wider */
+div[data-testid="stDataFrame"] table td:first-child,
+div[data-testid="stDataFrame"] table th:first-child {
+    min-width: 220px !important;   /* adjust width of Item Name */
+    max-width: 250px !important;
+    white-space: normal !important; /* wrap text if too long */
+}
+
+/* Make all other columns narrower (for dates & totals) */
+div[data-testid="stDataFrame"] table td:not(:first-child),
+div[data-testid="stDataFrame"] table th:not(:first-child) {
+    min-width: 60px !important;
+    max-width: 70px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Keep table layout stable */
+div[data-testid="stDataFrame"] table {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
