@@ -227,7 +227,7 @@ def main():
     # Get date inputs first (needed for data fetching)
     # Default date range (last 2 weeks)
     default_end = datetime.now().date()
-    default_start = default_end - timedelta(days=13)
+    default_start = default_end - timedelta(days=5)
     
     # Use session state to persist date values
     if 'start_date' not in st.session_state:
