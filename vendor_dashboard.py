@@ -20,30 +20,49 @@ st.set_page_config(
 st.markdown("""
     <style>
 
+    /* Disable Streamlit autosizing effect */
+    div[data-testid="stDataFrame"] {
+        overflow: visible !important;
+    }
+
+    /* Fix table layout and disable auto column sizing */
+    div[data-testid="stDataFrame"] table {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+
     /* Make the first column (Item Name) wider */
-div[data-testid="stDataFrame"] table td:first-child,
-div[data-testid="stDataFrame"] table th:first-child {
-    min-width: 220px !important;   /* adjust width of Item Name */
-    max-width: 250px !important;
-    white-space: normal !important; /* wrap text if too long */
-}
+    div[data-testid="stDataFrame"] table td:first-child,
+    div[data-testid="stDataFrame"] table th:first-child {
+        min-width: 220px !important;
+        max-width: 250px !important;
+        white-space: normal !important;
+    }
 
-/* Make all other columns narrower (for dates & totals) */
-div[data-testid="stDataFrame"] table td:not(:first-child),
-div[data-testid="stDataFrame"] table th:not(:first-child) {
-    min-width: 60px !important;
-    max-width: 70px !important;
-    text-align: center !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-}
+    /* Make all other columns narrower */
+    div[data-testid="stDataFrame"] table td:not(:first-child),
+    div[data-testid="stDataFrame"] table th:not(:first-child) {
+        min-width: 60px !important;
+        max-width: 70px !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
 
-/* Keep table layout stable */
-div[data-testid="stDataFrame"] table {
-    table-layout: fixed !important;
-    width: 100% !important;
-}
+    /* Table header style */
+    div[data-testid="stDataFrame"] table thead th {
+        background-color: #FFD66B !important;
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+
+    /* General font adjustments */
+    .stDataFrame {
+        font-size: 0.9rem;
+    }
+
+    /* Header and total styles */
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -51,7 +70,6 @@ div[data-testid="stDataFrame"] table {
         margin-bottom: 10px;
         color: #1f1f1f;
     }
-    
     .total-orders {
         font-size: 3.5rem;
         font-weight: bold;
@@ -65,7 +83,8 @@ div[data-testid="stDataFrame"] table {
         color: #666;
         margin-bottom: 20px;
     }
-    #this is the style for the last refresh time
+
+    /* Date box */
     .date-box {
         background-color: #ffebee;
         padding: 10px 15px;
@@ -76,32 +95,19 @@ div[data-testid="stDataFrame"] table {
         color: #c62828;
         font-weight: 500;
     }
-    .stDataFrame {
-        font-size: 0.9rem;
-    }
-    /* Yellow header for table */
-    .stDataFrame thead th {
-        background-color: #FFD66B !important;
-        color: #000 !important;
-        font-weight: bold !important;
-    }
-    /* Alternative selector for table headers */
-    table thead th {
-        background-color: #FFD66B !important;
-        color: #000 !important;
-        font-weight: bold !important;
-    }
-    div[data-testid="stDataFrame"] table thead th {
-        background-color: #FFD66B !important;
-        color: #000 !important;
-        font-weight: bold !important;
-    }
+
     /* Hide Streamlit menu and footer */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+
     </style>
 """, unsafe_allow_html=True)
+
+# When displaying your DataFrame:
+
+
+  
 
 # Data source URL
 DATA_URL = "https://sgs.schoolmanageronline.com/inventoryCafeteriaReportView.php"
