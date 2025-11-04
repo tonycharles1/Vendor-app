@@ -41,15 +41,17 @@ st.markdown("""
         margin-bottom: 20px;
     }
     .date-box {
-        background-color: #ffebee;
-        padding: 10px 15px;
-        border-radius: 4px;
-        border: 2px solid #ffcdd2;
-        display: inline-block;
-        margin: 5px;
-        color: #c62828;
-        font-weight: 500;
-    }
+    background-color: #ffebee;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 2px solid #ffcdd2;
+    display: inline-block;
+    margin: 5px;
+    color: #c62828;
+    font-weight: 500;
+    width: 100px; /* smaller fixed width */
+    text-align: center; /* center the text */
+}
     .stDataFrame {
         font-size: 0.9rem;
     }
