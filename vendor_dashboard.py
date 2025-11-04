@@ -361,13 +361,7 @@ def main():
     
     if df is not None:
         
-        st.markdown("---")
         
-        # Display total orders
-        st.markdown('<div class="total-orders">' + str(total_orders) + '</div>', unsafe_allow_html=True)
-        st.markdown('<div class="orders-label">Orders</div>', unsafe_allow_html=True)
-        
-        st.markdown("---")
         
         if report_df is not None and not report_df.empty:
             # Format column names for better display
