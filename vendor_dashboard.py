@@ -387,9 +387,11 @@ def main():
             styled_df = styled_df.format(format_dict)
             
             st.dataframe(
-                styled_df,
-                use_container_width=True,
-                height=400
+    styled_df,
+    use_container_width=True,
+    height=400,
+    column_config={
+        col: st.column_config.Column(width="small") for col in display_df.columns}
             )
             
             # WhatsApp send section
