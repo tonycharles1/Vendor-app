@@ -346,15 +346,17 @@ def main():
         unique_dates = None
     
     # Display metrics at the top (right after auto-refresh message)
-    col_metric1, col_metric2, col_metric3,col_metric4 = st.columns(4)
+    col_metric1, col_metric2, col_metric3,col_metric4 ,col_metric5= st.columns(5)
     with col_metric1:
-        st.metric("Unique Items", unique_items)
+        st.metric("📦Unique Items", unique_items)
     with col_metric2:
-        st.metric("Days in Range", unique_dates_count)
+        st.metric("📅Days in Range", unique_dates_count)
     with col_metric3:
-        st.metric("Avg Orders/Day", f"{avg_per_day:.1f}")
+        st.metric("📊Avg Orders/Day", avg_per_day)
     with col_metric4:
-        st.metric("Payment Amount", f"{total_item_amount:.1f}")
+        st.metric("💰Payment Amount", total_item_amount)
+    with col_metric5:
+        st.metric("🧾Total Orders", total_orders)
     st.markdown("---")
     
     if df is not None:
