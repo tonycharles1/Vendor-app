@@ -19,50 +19,6 @@ st.set_page_config(
 # CSS for styling
 st.markdown("""
     <style>
-
-    /* Disable Streamlit autosizing effect */
-    div[data-testid="stDataFrame"] {
-        overflow: visible !important;
-    }
-
-    /* Fix table layout and disable auto column sizing */
-    div[data-testid="stDataFrame"] table {
-        table-layout: fixed !important;
-        width: 100% !important;
-    }
-
-    /* Make the first column (Item Name) wider */
-    div[data-testid="stDataFrame"] table td:first-child,
-    div[data-testid="stDataFrame"] table th:first-child {
-        min-width: 220px !important;
-        max-width: 250px !important;
-        white-space: normal !important;
-    }
-
-    /* Make all other columns narrower */
-    div[data-testid="stDataFrame"] table td:not(:first-child),
-    div[data-testid="stDataFrame"] table th:not(:first-child) {
-        min-width: 60px !important;
-        max-width: 70px !important;
-        text-align: center !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-    }
-
-    /* Table header style */
-    div[data-testid="stDataFrame"] table thead th {
-        background-color: #FFD66B !important;
-        color: #000 !important;
-        font-weight: bold !important;
-    }
-
-    /* General font adjustments */
-    .stDataFrame {
-        font-size: 0.9rem;
-    }
-
-    /* Header and total styles */
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -70,6 +26,7 @@ st.markdown("""
         margin-bottom: 10px;
         color: #1f1f1f;
     }
+    
     .total-orders {
         font-size: 3.5rem;
         font-weight: bold;
@@ -83,8 +40,6 @@ st.markdown("""
         color: #666;
         margin-bottom: 20px;
     }
-
-    /* Date box */
     .date-box {
         background-color: #ffebee;
         padding: 10px 15px;
@@ -95,19 +50,32 @@ st.markdown("""
         color: #c62828;
         font-weight: 500;
     }
-
+    .stDataFrame {
+        font-size: 0.9rem;
+    }
+    /* Yellow header for table */
+    .stDataFrame thead th {
+        background-color: #FFD66B !important;
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+    /* Alternative selector for table headers */
+    table thead th {
+        background-color: #FFD66B !important;
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+    div[data-testid="stDataFrame"] table thead th {
+        background-color: #FFD66B !important;
+        color: #000 !important;
+        font-weight: bold !important;
+    }
     /* Hide Streamlit menu and footer */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-
     </style>
 """, unsafe_allow_html=True)
-
-# When displaying your DataFrame:
-
-
-  
 
 # Data source URL
 DATA_URL = "https://sgs.schoolmanageronline.com/inventoryCafeteriaReportView.php"
@@ -259,7 +227,7 @@ def main():
     # Get date inputs first (needed for data fetching)
     # Default date range (last 2 weeks)
     default_end = datetime.now().date()
-    default_start = default_end - timedelta(days=5)
+    default_start = default_end - timedelta(days=13)
     
     # Use session state to persist date values
     if 'start_date' not in st.session_state:
@@ -271,9 +239,6 @@ def main():
     with st.spinner("Fetching data..."):
         df = fetch_data()
     
-
-        st.markdown('<div class="main-header">XPRESS SGS VENDOR DETAILS</div>', unsafe_allow_html=True)
-
     # Refresh button at the top
     col_refresh1, col_refresh2, col_refresh3 = st.columns([1, 1, 1])
     with col_refresh2:
@@ -310,9 +275,9 @@ def main():
         
         st.markdown('</div>', unsafe_allow_html=True)
     
-
-       
-        
+    with col2:
+        st.markdown('<div class="main-header">XPRESS SGS VENDOR DETAILS</div>', unsafe_allow_html=True)
+        st.markdown('<div class="vendor-label">Vendor</div>', unsafe_allow_html=True)
     
     with col3:
         # Get current time in IST (Indian Standard Time)
@@ -338,7 +303,27 @@ def main():
                 last_refresh = utc_now.strftime("%d-%m-%Y %I:%M:%S %p UTC")
         st.markdown(f'<div class="date-box" style="margin-top: 20px;">Last Refresh Time<br>{last_refresh}</div>', unsafe_allow_html=True)
     
+
+
+
+    
     # Process data and calculate metrics for display at top
+
+# Calculate Total Item Amount
+    df['Item Date'] = pd.to_datetime(df['Item Date'], errors='coerce')
+    df_filtered = df[
+        (df['Order Status'] == 'completed') &
+        (df['Item Date'] >= pd.Timestamp(start_date)) &
+        (df['Item Date'] <= pd.Timestamp(end_date))
+    ]
+    if 'Item Total Amount' in df_filtered.columns:
+        total_item_amount = df_filtered['Item Total Amount'].sum()
+    else:
+        total_item_amount = 0
+
+
+
+
     if df is not None:
         # Process data with current date inputs
         report_df, total_orders, unique_dates = process_data(df, pd.Timestamp(start_date), pd.Timestamp(end_date))
@@ -363,17 +348,24 @@ def main():
     # Display metrics at the top (right after auto-refresh message)
     col_metric1, col_metric2, col_metric3,col_metric4 = st.columns(4)
     with col_metric1:
-        st.metric("📦Unique Items", unique_items)
+        st.metric("Unique Items", unique_items)
     with col_metric2:
-        st.metric("⏳Days in Range", unique_dates_count)
+        st.metric("Days in Range", unique_dates_count)
     with col_metric3:
-        st.metric("📅Avg Orders/Day", f"{avg_per_day:.1f}")
+        st.metric("Avg Orders/Day", f"{avg_per_day:.1f}")
     with col_metric4:
-        st.metric("🧾Total Orders", total_orders)
+        st.metric("Total Item Amount", f"{total_item_amount:.1f}")
+    st.markdown("---")
     
     if df is not None:
         
+        st.markdown("---")
         
+        # Display total orders
+        st.markdown('<div class="total-orders">' + str(total_orders) + '</div>', unsafe_allow_html=True)
+        st.markdown('<div class="orders-label">Orders</div>', unsafe_allow_html=True)
+        
+        st.markdown("---")
         
         if report_df is not None and not report_df.empty:
             # Format column names for better display
@@ -418,11 +410,9 @@ def main():
             styled_df = styled_df.format(format_dict)
             
             st.dataframe(
-    styled_df,
-    use_container_width=True,
-    height=400,width=100,
-    column_config={
-        col: st.column_config.Column(width="small") for col in display_df.columns}
+                styled_df,
+                use_container_width=True,
+                height=400
             )
             
             # WhatsApp send section
