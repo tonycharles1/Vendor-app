@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timezone
 from io import StringIO
 import pytz
-import plotly.express as px  # ✅ for column chart
+import plotly.express as px  
 
 # Page configuration
 st.set_page_config(
