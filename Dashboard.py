@@ -79,6 +79,10 @@ def main():
     # Fetch data
     with st.spinner("Fetching data..."):
         df = fetch_data()
+    
+    # Filter by completed orders only
+    if df is not None and not df.empty:
+        df = df[df['Order Status'] == 'completed']
 
     # Refresh button
     col_refresh1, col_refresh2, col_refresh3 = st.columns([1, 1, 1])
@@ -109,7 +113,6 @@ def main():
     # Calculate basic metrics
     if df is not None and not df.empty:
         df['Item Date'] = pd.to_datetime(df['Item Date'], errors='coerce')
-        df = df[df['Order Status'] == 'completed']
 
         total_orders = len(df)
         unique_items = df['Item Name'].nunique()
